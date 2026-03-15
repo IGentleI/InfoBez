@@ -1,0 +1,74 @@
+@page
+@model RsaLab.Web.Pages.IndexModel
+@{
+    ViewData["Title"] = "RSA вариант 9";
+}
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h1 class="h3 mb-3">Практическая работа: RSA (Вариант 9)</h1>
+                <p class="text-secondary">Автоматическая генерация модуля <strong>N</strong> на 49 десятичных знаков, разбиение текста на блоки и обратная проверка расшифрования.</p>
+
+                <form method="post" class="vstack gap-3">
+                    <div>
+                        <label asp-for="Input.PlainText" class="form-label">Исходный текст</label>
+                        <textarea asp-for="Input.PlainText" class="form-control" rows="8"></textarea>
+                    </div>
+                    <div>
+                        <label asp-for="Input.DigitsInN" class="form-label">Количество знаков в N</label>
+                        <input asp-for="Input.DigitsInN" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сгенерировать, зашифровать и расшифровать</button>
+                </form>
+
+                @if (!ViewContext.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger mt-3" asp-validation-summary="All"></div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        @if (Model.Result is null)
+        {
+            <div class="card border-0 bg-light h-100">
+                <div class="card-body d-flex align-items-center justify-content-center text-muted">
+                    Запустите алгоритм, чтобы увидеть ключи, шифртекст, оценку криптостойкости и производительности.
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card shadow-sm border-0 mb-3">
+                <div class="card-body">
+                    <h2 class="h5">Результат</h2>
+                    <div class="small text-break">
+                        <p><strong>N:</strong> @Model.Result.N</p>
+                        <p><strong>P:</strong> @Model.Result.P</p>
+                        <p><strong>Q:</strong> @Model.Result.Q</p>
+                        <p><strong>e:</strong> @Model.Result.E</p>
+                        <p><strong>d:</strong> @Model.Result.D</p>
+                        <p><strong>Размер блока (байт):</strong> @Model.Result.BlockSizeBytes</p>
+                        <p><strong>Шифртекст:</strong> @Model.Result.CipherAsText</p>
+                        <p><strong>Расшифрованный текст:</strong> @Model.Result.DecryptedText</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card border-0 bg-dark text-light mb-3">
+                <div class="card-body">
+                    <h2 class="h6 text-uppercase">Оценка криптостойкости</h2>
+                    <p class="mb-0">Размер модуля: <strong>@Model.SecurityBits бит</strong>. Для учебного RSA это демонстрационный уровень. Для реальной защиты обычно используют 2048+ бит.</p>
+                </div>
+            </div>
+            <div class="card border-0 bg-success-subtle">
+                <div class="card-body">
+                    <h2 class="h6 text-uppercase">Производительность</h2>
+                    <p class="mb-0">@Model.PerformanceSummary</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
