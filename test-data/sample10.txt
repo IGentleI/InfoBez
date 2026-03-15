@@ -1,0 +1,1 @@
+ASCII only example for control.
